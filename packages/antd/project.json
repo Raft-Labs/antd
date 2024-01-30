@@ -30,6 +30,49 @@
       "options": {
         "reportsDirectory": "../../coverage/packages/antd"
       }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "packages/antd/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/antd",
+        "configDir": "packages/antd/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c packages/antd/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "antd:build-storybook",
+        "staticFilePath": "dist/storybook/antd"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "antd:build-storybook:ci"
+        }
+      }
     }
   }
 }
